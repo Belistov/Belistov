@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download My D&D Themed Lua Game</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>DnD</h1>
+    </header>
+
+    <!-- Game Download Section -->
+    <section class="game-download">
+      <h2>Download the Game</h2>
+      <p>Click the button below to download the game:</p>
+      <a href="game.zip" download class="download-link">Download ZIP</a>
+    </section>
+
+    <!-- Controls Section -->
+    <section class="controls">
+      <h2>Game Controls</h2>
+      <ul>
+        <li><strong>Move Entity:</strong> Arrow Keys</li>
+        <li><strong>Cycle Entities:</strong> T</li>
+        <li><strong>Paste map:</strong> F5</li>
+        <li><strong>Select Initiative:</strong> Arrow Keys</li>
+        <li><strong>Select Enemies Amount:</strong> Up/Down Arrow Keys</li>
+        <li><strong>Select Players:</strong> Mouse Click</li>
+      </ul>
+    </section>
+
+    <!-- Map Creator Section -->
+    <section class="map-creator">
+      <h2>Map Creator</h2>
+      <div class="map-settings">
+        <label for="map-width">Map Width:</label>
+        <input type="number" id="map-width" min="5" max="50" value="10">
+
+        <label for="map-height">Map Height:</label>
+        <input type="number" id="map-height" min="5" max="50" value="10">
+        
+        <button onclick="createMap()">Create Map</button>
+      </div>
+
+      <!-- Object Selector -->
+      <div class="object-selector">
+        <button onclick="selectObject('tree')">🌲 Tree</button>
+        <button onclick="selectObject('chest')">💰 Chest</button>
+      </div>
+
+      <!-- Map Grid -->
+      <div id="map-grid" class="map-grid">
+        <!-- Map cells generated here -->
+      </div>
+
+      <!-- Copy and Paste Map Data -->
+      <button onclick="copyMapData()" class="copy-button">Copy Map</button>
+      <div class="paste-map">
+        <textarea id="map-data-input" placeholder="Paste map data here..."></textarea>
+        <button onclick="loadMapData()">Load Map</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
