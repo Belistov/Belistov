@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Grid</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+      background: linear-gradient(90deg, #0B0010, #1A001A, #290029, #370037, #460046);
+      color: white;
+    }
+
+    #grid {
+      display: grid;
+      gap: 0; /* Ensure no gaps between cells */
+      position: relative;
+      border: 1px solid #290029;
+      background-color: #0B0010;
+    }
+
+    .cell {
+      width: 20px;
+      height: 20px;
+      background-color: #f0f0f0;
+      border: 1px solid #e0e0e0;
+    }
+
+    .square {
+      position: absolute;
+      cursor: grab;
+    }
+
+    .square-name {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    #healthWindow {
+      position: absolute;
+      background-color: #1A001A;
+      border: 1px solid #290029;
+      color: white;
+      padding: 10px;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label for="gridWidthInput">Grid Width: </label>
+    <input type="number" id="gridWidthInput" value="1" min="1" step="1" onchange="updateGridSize()">
+    <label for="gridHeightInput">Grid Height: </label>
+    <input type="number" id="gridHeightInput" value="1" min="1" step="1" onchange="updateGridSize()">
+  </div>
+  <div class="controls">
+    <button onclick="spawnSquare(1, 'gray')">Add 1x1 Square</button>
+    <button onclick="spawnSquare(2, 'gray')">Add 2x2 Square</button>
+    <button onclick="spawnSquare(3, 'gray')">Add 3x3 Square</button>
+  </div>
+
+  <div id="grid"></div>
+  
+  <div id="healthWindow">
+    <label for="healthInput">Health: </label>
+    <input type="number" id="healthInput" min="0">
+    <label for="colorInput">Color: </label>
+    <select id="colorInput">
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="gray">Gray</option>
+    </select>
+    <label for="nameInput">Name: </label>
+    <input type="text" id="nameInput">
+    <label for="widthInput">Width: </label>
+    <input type="number" id="widthInput" min="1" step="1">
+    <label for="heightInput">Height: </label>
+    <input type="number" id="heightInput" min="1" step="1">
+    <button onclick="updateSquareDetails()">Update</button>
+    <button onclick="closeHealthWindow()">Close</button>
+  </div>
+
+  <script>
+    function updateGridSize() {
+      const gridWidth = document.getElementById('gridWidthInput').value;
+      const gridHeight = document.getElementById('gridHeightInput').value;
+
+      grid.style.gridTemplateColumns = `repeat(${gridWidth}, 20px)`;
+      grid.style.gridTemplateRows = `repeat(${gridHeight}, 20px)`;
+      grid.style.width = `${gridWidth * 20}px`;
+      grid.style.height = `${gridHeight * 20}px`;
+
+      // Remove existing cells and regenerate grid
+      grid.innerHTML = '';
+      for (let i = 0; i < gridWidth * gridHeight; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        grid.appendChild(cell);
+      }
+    }
+    const grid = document.getElementById('grid');
+    const healthWindow = document.getElementById('healthWindow');
+    const healthInput = document.getElementById('healthInput');
+    const colorInput = document.getElementById('colorInput');
+    const nameInput = document.getElementById('nameInput');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+
+    // Initialize grid
+    for (let i = 0; i < 32 * 32; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      grid.appendChild(cell);
+    }
+
+    let selectedSquare = null;
+
+    function spawnSquare(size, color) {
+      const square = document.createElement('div');
+      square.classList.add('square');
+      square.style.width = `${size * 20}px`;
+      square.style.height = `${size * 20}px`;
+      square.style.left = '0px';
+      square.style.top = '0px';
+      square.style.backgroundColor = color;
+      square.dataset.health = 100; // Default health
+
+      const nameTag = document.createElement('div');
+      nameTag.classList.add('square-name');
+      nameTag.textContent = ""; // Default empty name
+      nameTag.style.left = `${size * 10}px`;
+      square.appendChild(nameTag);
+
+      square.addEventListener('mousedown', startDrag);
+      square.addEventListener('contextmenu', showHealth);
+
+      grid.appendChild(square);
+    }
+
+    function startDrag(event) {
+      if (event.button !== 0) return; // Only left-click
+
+      selectedSquare = event.target;
+      selectedSquare.style.cursor = 'grabbing';
+
+      const gridRect = grid.getBoundingClientRect();
+      const offsetX = event.clientX - selectedSquare.getBoundingClientRect().left;
+      const offsetY = event.clientY - selectedSquare.getBoundingClientRect().top;
+
+      function drag(event) {
+        const x = Math.floor((event.clientX - gridRect.left - offsetX) / 20) * 20;
+        const y = Math.floor((event.clientY - gridRect.top - offsetY) / 20) * 20;
+
+        const maxX = gridRect.width - selectedSquare.offsetWidth;
+        const maxY = gridRect.height - selectedSquare.offsetHeight;
+
+        selectedSquare.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
+        selectedSquare.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
+      }
+
+      function stopDrag() {
+        selectedSquare.style.cursor = 'grab';
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+        selectedSquare = null;
+      }
+
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', stopDrag);
+    }
+
+    function showHealth(event) {
+      event.preventDefault(); // Prevent context menu
+
+      const square = event.target;
+      const health = square.dataset.health;
+      const color = square.style.backgroundColor;
+      const nameTag = square.querySelector('.square-name');
+
+      healthInput.value = health;
+      colorInput.value = color;
+      nameInput.value = nameTag.textContent;
+      widthInput.value = parseInt(square.style.width) / 20;
+      heightInput.value = parseInt(square.style.height) / 20;
+
+      healthWindow.style.left = `${event.pageX}px`;
+      healthWindow.style.top = `${event.pageY}px`;
+      healthWindow.style.display = 'block';
+
+      selectedSquare = square;
+    }
+
+    function updateSquareDetails() {
+      if (selectedSquare) {
+        selectedSquare.dataset.health = healthInput.value;
+        selectedSquare.style.backgroundColor = colorInput.value;
+        const nameTag = selectedSquare.querySelector('.square-name');
+        nameTag.textContent = nameInput.value;
+        selectedSquare.style.width = `${widthInput.value * 20}px`;
+        selectedSquare.style.height = `${heightInput.value * 20}px`;
+      }
+    }
+
+    function closeHealthWindow() {
+      healthWindow.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DM Helper</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(90deg, #0B0010, #1A001A, #290029, #370037, #460046);
+      color: white;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      background-color: #290029;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #460046;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dungeon Master Helper</h1>
+  <div class="button-container">
+    <button onclick="location.href='main.html'">For the Players</button>
+    <button onclick="location.href='enemyTracker.html'">For the DM</button>
+  </div>
+</body>
+</html>

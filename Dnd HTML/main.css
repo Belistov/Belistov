@@ -47,32 +47,7 @@ body {
     justify-content: center;
     border-radius: 10px;
   }
-      /* Style for the download button */
-      .download-link {
-        display: inline-block;
-        padding: 15px 30px;
-        margin: 20px 0;
-        font-size: 18px;
-        color: #fff;
-        background-color: #7b5e4f; /* Green background */
-        border: none;
-        border-radius: 8px;
-        text-decoration: none;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-      }
   
-      .download-link:hover {
-        background-color: #f5d28d; /* Darker green on hover */
-        transform: scale(1.05);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-      }
-  
-      .download-link:active {
-        transform: scale(1);
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-      }
   .placeholder-text {
     color: #7b5e4f;
     font-size: 1.5em;
