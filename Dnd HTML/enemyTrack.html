@@ -59,22 +59,43 @@
       z-index: 1000;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: none;
-      display: grid; /* Use grid layout */
-      grid-template-columns: auto 1fr; /* Two columns: label and input */
-      gap: 5px 10px; /* Add spacing between rows and columns */
-      align-items: center; /* Center items vertically */
-    }
-    
-    #healthWindow label {
-      text-align: right; /* Align labels to the right */
-    }
-    
-    #healthWindow input,
-    #healthWindow select,
-    #healthWindow button {
-      width: 100%; /* Make inputs take full width */
+      width: 300px;
     }
 
+    #healthWindow div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px; /* Add space between rows */
+    }
+
+    #healthWindow label {
+      width: 80px; /* Fixed label width for alignment */
+      text-align: right;
+      margin-right: 10px; /* Space between label and input */
+    }
+
+    #healthWindow input,
+    #healthWindow select {
+      flex: 1; /* Inputs take remaining space */
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    #healthWindow button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 5px;
+      background-color: #290029;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    #healthWindow button:hover {
+      background-color: #460046;
+    }
   </style>
 </head>
 <body>
@@ -93,21 +114,31 @@
   <div id="grid"></div>
   
   <div id="healthWindow">
-    <label for="healthInput">Health: </label>
-    <input type="number" id="healthInput" min="0">
-    <label for="colorInput">Color: </label>
-    <select id="colorInput">
-      <option value="red">Red</option>
-      <option value="blue">Blue</option>
-      <option value="green">Green</option>
-      <option value="gray">Gray</option>
-    </select>
-    <label for="nameInput">Name: </label>
-    <input type="text" id="nameInput">
-    <label for="widthInput">Width: </label>
-    <input type="number" id="widthInput" min="1" step="1">
-    <label for="heightInput">Height: </label>
-    <input type="number" id="heightInput" min="1" step="1">
+    <div>
+      <label for="healthInput">Health:</label>
+      <input type="number" id="healthInput" min="0">
+    </div>
+    <div>
+      <label for="colorInput">Color:</label>
+      <select id="colorInput">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="gray">Gray</option>
+      </select>
+    </div>
+    <div>
+      <label for="nameInput">Name:</label>
+      <input type="text" id="nameInput">
+    </div>
+    <div>
+      <label for="widthInput">Width:</label>
+      <input type="number" id="widthInput" min="1" step="1">
+    </div>
+    <div>
+      <label for="heightInput">Height:</label>
+      <input type="number" id="heightInput" min="1" step="1">
+    </div>
     <button onclick="updateSquareDetails()">Update</button>
     <button onclick="closeHealthWindow()">Close</button>
   </div>
