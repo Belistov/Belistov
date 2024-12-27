@@ -59,7 +59,22 @@
       z-index: 1000;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: none;
+      display: grid; /* Use grid layout */
+      grid-template-columns: auto 1fr; /* Two columns: label and input */
+      gap: 5px 10px; /* Add spacing between rows and columns */
+      align-items: center; /* Center items vertically */
     }
+    
+    #healthWindow label {
+      text-align: right; /* Align labels to the right */
+    }
+    
+    #healthWindow input,
+    #healthWindow select,
+    #healthWindow button {
+      width: 100%; /* Make inputs take full width */
+    }
+
   </style>
 </head>
 <body>
